@@ -1,0 +1,196 @@
+{
+    "name": "goober2",
+    "presets": [
+
+    ],
+    "max health": 420,
+    "moves": [
+        {
+            "name": "Hit", 
+            "effects": [
+                {
+                    "effect": "damage target",
+                    "inferred parameters": {
+                        "min_damage": "base damage",
+                        "max_damage": "damage cap"
+                    },
+                    "literal parameters": {
+
+                    },
+                    "pre effect": [
+                        {
+                            "function": "get target attribute",
+                            "inferred parameters": {
+                                "target_index": "last hit"
+                            },
+                            "literal parameters": {
+                                "key": "enemy element",
+                                "target_key": "element"
+                            },
+                            "requirements": []
+                        },
+                        {
+                            "function": "set cache",
+                            "inferred parameters": {},
+                            "literal parameters": {
+                                "key": "damage doubled",
+                                "value": true
+                            },
+                            "requirements": [
+                                [
+                                    {
+                                        "function": "compare",
+                                        "inferred parameters": {
+                                            "lhs": "enemy element",
+                                            "rhs": "strong against"
+                                        }, 
+                                        "literal parameters": {
+                                            "operator": "=",
+                                            "key": "throwaway"
+                                        },
+                                        "requirements": []
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "function": "add",
+                            "inferred parameters": {
+                                "lhs": "damage cap",
+                                "rhs": "base damage"
+                            },
+                            "literal parameters": {
+                                "key": "damage cap"
+                            },
+                            "requirements": [
+                                [
+                                    {
+                                        "function": "compare",
+                                        "inferred parameters": {
+                                            "lhs": "enemy element",
+                                            "rhs": "strong against"
+                                        }, 
+                                        "literal parameters": {
+                                            "operator": "=",
+                                            "key": "throwaway"
+                                        },
+                                        "requirements": []
+                                    }
+                                ]
+                            ]
+                        }, 
+                        {
+                            "function": "log",
+                            "inferred parameters": {
+                                "damage": "damage cap"
+                            },
+                            "literal parameters": {
+                                "format": "hit is powered up due to type advantage (damage cap: {damage})"
+                            },
+                            "requirements": [
+                                [
+                                    {
+                                        "function": "compare",
+                                        "inferred parameters": {
+                                            "lhs": "damage doubled"
+                                        },
+                                        "literal parameters": {
+                                            "operator": "=",
+                                            "rhs": true,
+                                            "key": "throwaway"
+                                        },
+                                        "requirements": []
+                                    }
+                                ]
+                            ]
+                        }
+                    ],
+                    "post effect": [     
+                        {
+                            "function": "subtract",
+                            "inferred parameters": {
+                                "lhs": "damage cap",
+                                "rhs": "base damage"
+                            },
+                            "literal parameters": {
+                                "key": "damage cap"
+                            },
+                            "requirements": [
+                                [
+                                    {
+                                        "function": "compare",
+                                        "inferred parameters": {
+                                            "lhs": "damage doubled"
+                                        },
+                                        "literal parameters": {
+                                            "rhs": true,
+                                            "operator": "=",
+                                            "key": "throwaway"
+                                        },
+                                        "requirements": []
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "function": "set cache",
+                            "inferred parameters": {},
+                            "literal parameters": {
+                                "key": "damage doubled",
+                                "value": false
+                            },
+                            "requirements": [
+                                [
+                                    {
+                                        "function": "compare",
+                                        "inferred parameters": {
+                                            "lhs": "damage doubled"
+                                        },
+                                        "literal parameters": {
+                                            "rhs": true,
+                                            "operator": "=",
+                                            "key": "throwaway"
+                                        },
+                                        "requirements": []
+                                    }
+                                ]
+                            ]
+                        }
+                    ],
+                    "requirements": []
+                }
+
+            ],
+            "requirements": []
+        }
+    ],
+    "cache": {
+        "base damage": 16,
+        "element": "ground",
+        "strong against": "steel",
+        "damage doubled": false
+    },
+    "post init": [
+        {
+            "function": "set cache",
+            "inferred parameters": {
+                "value": "base damage"
+            },
+            "literal parameters": {
+                "key": "damage cap"
+            },
+            "requirements": []
+        },
+        {
+            "function": "add",
+            "inferred parameters": {
+                "lhs": "damage cap",
+                "rhs": "damage cap"
+            },
+            "literal parameters": {
+                "key": "damage cap"
+            },
+            "requirements": []
+        }
+    ]
+}

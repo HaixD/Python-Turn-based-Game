@@ -1,0 +1,1 @@
+Monsters are fighters to be loaded into the game. All files in this directory should be a JSON file.
